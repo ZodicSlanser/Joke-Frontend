@@ -1,26 +1,62 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <h1>Welcome to the Fun Zone! 😄</h1>
+    <button @click="getJoke">Tell me a joke!</button>
+    <p v-if="joke">{{ joke }}</p>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
+import {developmentServerURL as url}  from '@/constants.js';
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      joke: '',
+    };
+  },
+  methods: {
+    async getJoke() {
+      try {
+        const response = await axios.get(url + 'joke');
+        this.joke = response.data.joke;
+      } catch (error) {
+        this.joke = 'Oops! No jokes today. 🤷‍♂️';
+      }
+    },
+  },
+};
 </script>
 
-<style>
+<style scoped>
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   margin-top: 60px;
 }
+
+.h1 {
+  color: #333;
+}
+p {
+  color: #666;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+
+
 </style>
